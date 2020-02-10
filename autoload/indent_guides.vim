@@ -246,9 +246,13 @@ endfunction
 " Returns: 'Normal xxx guifg=#323232 guibg=#ffffff'
 "
 function! indent_guides#capture_highlight(group_name)
-  redir => l:output
-  exe "silent hi " . a:group_name
-  redir END
+  if exists("*execute")
+    let l:output = execute("silent hi " . a:group_name)
+  else
+    redir => l:output
+    exe "silent hi " . a:group_name
+    redir END
+  endif
 
   let l:output = substitute(l:output, "\n", "", "")
   return l:output
